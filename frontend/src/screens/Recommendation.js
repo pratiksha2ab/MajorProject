@@ -19,7 +19,7 @@ function Recommendation() {
 
   useEffect(() => {
     dispatch(recommendProducts());
-  }, dispatch);
+  }, [dispatch]);
   return loading ? (
     <Loader />
   ) : error ? (
