@@ -32,7 +32,7 @@ function Footer() {
             </li>
             <li className="list-unstyled">
               <i className="fab fa-github"></i>
-              <a href="#!"> Github</a>
+              <a href="https://github.com/VeNom198"> Github</a>
             </li>
             <li className="list-unstyled">
               <i className="fab fa-linkedin-in"></i>

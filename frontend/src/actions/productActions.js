@@ -237,10 +237,12 @@ export const listTopProducts = () => async (dispatch) => {
   }
 };
 
-export const recommendProducts = () => async (dispatch) => {
+export const recommendProducts = (pname) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_RECOMMENDATION_REQUEST });
-    const { data } = await axios.get(`/api/products/recommend/`);
+    const { data } = await axios.post(`/api/products/recommend/`, {
+      name: pname,
+    });
 
     dispatch({
       type: PRODUCT_RECOMMENDATION_SUCCESS,

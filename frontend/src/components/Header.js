@@ -34,9 +34,6 @@ function Header() {
                   <i className="fas fa-shopping-cart"></i> Cart
                 </Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/recommendation">
-                <Nav.Link>My Recommendations</Nav.Link>
-              </LinkContainer>
 
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="username">

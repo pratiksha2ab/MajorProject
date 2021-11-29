@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import Rating from "./Rating";
 import "./Product.css";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { recommendProducts } from "../actions/productActions";
 
 function Product({ product }) {
+  const dispatch = useDispatch();
+
+  const sendProductNameToRecommendAction = (e) => {
+    // console.log(productname);
+    console.log(product.name);
+    dispatch(recommendProducts(product.name));
+  };
   return (
     <Card className="merocard my-3 p-3 rounded">
-      <Link style={{ textDecoration: "none" }} to={`/product/${product._id}`}>
+      <Link
+        style={{ textDecoration: "none" }}
+        to={`/product/${product._id}`}
+        onClick={
+          // ((e) => setProductname(product.name),
+          sendProductNameToRecommendAction
+        }
+      >
         <Card.Img src={product.image} />
 
         <Card.Body>

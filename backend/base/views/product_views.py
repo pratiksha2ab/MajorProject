@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
+import pandas as pd
 
 from base.models import Product, Review
 from base.serializers import ProductSerializer
@@ -40,15 +41,42 @@ def getProduct(request, pk):
 
 @api_view(['GET'])
 def topProduct(request):
-    products = Product.objects.filter(rating__lte=2).order_by('-rating')[0:5]
+    products = Product.objects.filter(rating__gte=3).order_by('-rating')[0:3]
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+def recommend_here(product_name):
+    import pickle
+    with open("ml_model/model1.sav", "rb") as f:
+        model = pickle.load(f)
+    new_df = pd.read_csv("ml_model/new_data.csv")
+    movie_index = new_df[new_df['title'] == product_name].index[0]
+    print(movie_index)
+    distances = model[movie_index]
+    movies_list = sorted(list(enumerate(distances)),
+                         reverse=True, key=lambda x: x[1])[1:4]
+    print(movies_list)
+    recommend_list = []
+    for i in movies_list:
+        recommend_list.append(new_df.iloc[i[0]].title)
+    print(recommend_list)
+    return recommend_list
+
+
+@api_view(['POST'])
 def recommendProduct(request):
-    products = Product.objects.filter(rating__gte=3).order_by('-rating')[0:5]
-    serializer = ProductSerializer(products, many=True)
+    # products = Product.objects.filter(rating__gte=2).order_by('-rating')[0:3]
+    # serializer = ProductSerializer(products, many=True)
+    # return Response(serializer.data)
+    print("-"*20)
+    print(request.data)
+    product_name = request.data.get('name')
+    result = recommend_here(product_name)
+    print("---------->", result)
+
+    products_all = Product.objects.filter(name__in=result)
+    serializer = ProductSerializer(products_all, many=True)
     return Response(serializer.data)
 
 

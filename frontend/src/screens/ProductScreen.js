@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import RecommendProduct from "../components/RecommendProduct";
 import { useDispatch, useSelector } from "react-redux";
 import {
   listProductDetails,
   createProductReview,
+  recommendProducts,
 } from "../actions/productActions";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 import {
@@ -41,13 +43,18 @@ function ProductScreen({ match, history }) {
     success: successProductReview,
   } = productReviewCreate;
 
+  const productRecommendation = useSelector(
+    (state) => state.productRecommendation
+  );
+  const { products } = productRecommendation;
+
   useEffect(() => {
     if (successProductReview) {
       setRating(0);
       setComment("");
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-
+    // dispatch(recommendProducts(product.name));
     dispatch(listProductDetails(match.params.id));
   }, [successProductReview, match, dispatch]);
 
@@ -55,9 +62,15 @@ function ProductScreen({ match, history }) {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
 
+  const sendProductNameToRecommendAction = (e) => {
+    // console.log(productname);
+    console.log(product.name);
+    dispatch(recommendProducts(product.name));
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProductReview(match.params.id,{ rating, comment}));
+    dispatch(createProductReview(match.params.id, { rating, comment }));
   };
   return (
     <div>
@@ -67,7 +80,7 @@ function ProductScreen({ match, history }) {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message varaint="danger">{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <div>
           <Row>
@@ -149,6 +162,23 @@ function ProductScreen({ match, history }) {
               </Card>
             </Col>
           </Row>
+
+          <ListGroup>
+            <h2>You may also like</h2>
+            <Row onClick={sendProductNameToRecommendAction}>
+              {products.map((product) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <RecommendProduct product={product} />
+                </Col>
+              ))}
+            </Row>
+            {/* <Row>
+              {" "}
+              <Col>recommended products here</Col>
+              <Col>recommended products here</Col>{" "}
+              <Col>recommended products here</Col>
+            </Row> */}
+          </ListGroup>
           <Row>
             <Col md={6}>
               <h4>Reviews</h4>

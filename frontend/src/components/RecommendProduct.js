@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function RecommendProduct({ product }) {
   return (
-    <Card className="merocard my-3 p-3 rounded">
+    <Card className=" my-2 p-3 ">
       <Link style={{ textDecoration: "none" }} to={`/product/${product._id}`}>
         <Card.Img src={product.image} />
 
