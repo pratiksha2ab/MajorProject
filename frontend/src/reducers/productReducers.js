@@ -33,6 +33,12 @@ import {
   PRODUCT_RECOMMENDATION_REQUEST,
   PRODUCT_RECOMMENDATION_SUCCESS,
   PRODUCT_RECOMMENDATION_FAIL,
+  PRODUCT_RECOMMENDATION2_REQUEST,
+  PRODUCT_RECOMMENDATION2_SUCCESS,
+  PRODUCT_RECOMMENDATION2_FAIL,
+  PRODUCT_PEARSONRECOMMENDATION_REQUEST,
+  PRODUCT_PEARSONRECOMMENDATION_SUCCESS,
+  PRODUCT_PEARSONRECOMMENDATION_FAIL,
 } from "../constants/productConstants";
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -167,6 +173,42 @@ export const productRecommendationReducer = (
       return { loading: false, products: action.payload };
 
     case PRODUCT_RECOMMENDATION_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const productRecommendation2Reducer = (
+  state = { products: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_RECOMMENDATION2_REQUEST:
+      return { loading: true, products: [] };
+
+    case PRODUCT_RECOMMENDATION2_SUCCESS:
+      return { loading: false, products: action.payload };
+
+    case PRODUCT_RECOMMENDATION2_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const productPearsonRecommendationReducer = (
+  state = { products: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_PEARSONRECOMMENDATION_REQUEST:
+      return { loading: true, products: [] };
+
+    case PRODUCT_PEARSONRECOMMENDATION_SUCCESS:
+      return { loading: false, products: action.payload };
+
+    case PRODUCT_PEARSONRECOMMENDATION_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

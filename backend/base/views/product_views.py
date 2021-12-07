@@ -1,17 +1,18 @@
 from django.shortcuts import render
-from rest_framework import serializers
 
 # from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
+from rest_framework import serializers
+from rest_framework import status
+
 import pandas as pd
+import pickle
 
 from base.models import Product, Review
 from base.serializers import ProductSerializer
-
-from rest_framework import status
 
 
 @api_view(['GET'])
@@ -47,20 +48,19 @@ def topProduct(request):
 
 
 def recommend_here(product_name):
-    import pickle
-    with open("ml_model/model1.sav", "rb") as f:
+    with open("ml_model/model12.sav", "rb") as f:
         model = pickle.load(f)
-    new_df = pd.read_csv("ml_model/new_data.csv")
+    new_df = pd.read_csv("ml_model/new_data11.csv")
     movie_index = new_df[new_df['title'] == product_name].index[0]
-    print(movie_index)
+    # print(movie_index)
     distances = model[movie_index]
     movies_list = sorted(list(enumerate(distances)),
                          reverse=True, key=lambda x: x[1])[1:4]
-    print(movies_list)
+    # print(movies_list)
     recommend_list = []
     for i in movies_list:
         recommend_list.append(new_df.iloc[i[0]].title)
-    print(recommend_list)
+    # print(recommend_list)
     return recommend_list
 
 
@@ -69,14 +69,27 @@ def recommendProduct(request):
     # products = Product.objects.filter(rating__gte=2).order_by('-rating')[0:3]
     # serializer = ProductSerializer(products, many=True)
     # return Response(serializer.data)
-    print("-"*20)
-    print(request.data)
     product_name = request.data.get('name')
     result = recommend_here(product_name)
-    print("---------->", result)
 
     products_all = Product.objects.filter(name__in=result)
     serializer = ProductSerializer(products_all, many=True)
+    # print(serializer.data)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def recommendProductPearson(request):
+    print(request)
+    product_name = request.data.get('name').strip()
+    print("------------", product_name)
+    with open("ml_model/model_pcorr1.sav", "rb") as f:
+        model = pickle.load(f)
+    recommended_result = model.recommend(product_name)
+    name_list= [i[0] for i in recommended_result]
+    products = Product.objects.filter(name__in =name_list)
+    serializer = ProductSerializer(products, many=True)
+    # print(serializer.data)
     return Response(serializer.data)
 
 

@@ -13,6 +13,8 @@ urlpatterns = [
     path('<str:pk>/reviews/', views.createProductReview, name="create-review"),
     path('top/', views.topProduct, name="top-product"),
     path('recommend/', views.recommendProduct, name="recommend-product"),
+    path('recommendPearson/', views.recommendProductPearson,
+         name="recommendpearson-product"),
 
     path('<str:pk>/', views.getProduct, name="product"),
     path('delete/<str:pk>/', views.deleteProduct, name="product-delete"),

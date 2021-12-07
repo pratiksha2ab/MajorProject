@@ -34,7 +34,7 @@ class Review(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
-        return str(self.rating)
+        return f"{self.name} - {str(self.rating)}"
 
 
 class Order(models.Model):

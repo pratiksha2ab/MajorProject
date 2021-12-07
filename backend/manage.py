@@ -19,4 +19,5 @@ def main():
 
 
 if __name__ == '__main__':
+    from ml_model.pcorr_algo import PCorr
     main()

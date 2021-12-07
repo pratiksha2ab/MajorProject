@@ -3,18 +3,18 @@ import { Card } from "react-bootstrap";
 import "./Product.css";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
-import { recommendProducts2 } from "../actions/productActions";
+import { recommendPearsonProducts } from "../actions/productActions";
 import { useDispatch } from "react-redux";
 
-function RecommendProduct({ product }) {
+function RecommendPearson({ product }) {
   const dispatch = useDispatch();
 
-  const sendProductNameToRecommendAction2 = (e) => {
-    dispatch(recommendProducts2(product.name));
-  };
+  //   const sendProductNameToRecommendAction2 = (e) => {
+  //     dispatch(recommendProducts2(product.name));
+  //   };
 
   return (
-    <Card className=" my-2 p-3 " onClick={sendProductNameToRecommendAction2}>
+    <Card className=" my-2 p-3 ">
       <Link style={{ textDecoration: "none" }} to={`/product/${product._id}`}>
         <Card.Img src={product.image} />
 
@@ -38,4 +38,4 @@ function RecommendProduct({ product }) {
   );
 }
 
-export default RecommendProduct;
+export default RecommendPearson;

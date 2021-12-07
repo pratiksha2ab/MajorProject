@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   listProductDetails,
   createProductReview,
-  recommendProducts,
+  recommendPearsonProducts,
 } from "../actions/productActions";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 import {
@@ -62,15 +62,12 @@ function ProductScreen({ match, history }) {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
 
-  const sendProductNameToRecommendAction = (e) => {
-    // console.log(productname);
-    console.log(product.name);
-    dispatch(recommendProducts(product.name));
-  };
-
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(createProductReview(match.params.id, { rating, comment }));
+    {
+      rating >= 3 && dispatch(recommendPearsonProducts(product.name));
+    }
   };
   return (
     <div>
@@ -165,7 +162,7 @@ function ProductScreen({ match, history }) {
 
           <ListGroup>
             <h2>You may also like</h2>
-            <Row onClick={sendProductNameToRecommendAction}>
+            <Row>
               {products.map((product) => (
                 <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                   <RecommendProduct product={product} />

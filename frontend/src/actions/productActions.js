@@ -24,6 +24,12 @@ import {
   PRODUCT_RECOMMENDATION_REQUEST,
   PRODUCT_RECOMMENDATION_SUCCESS,
   PRODUCT_RECOMMENDATION_FAIL,
+  PRODUCT_RECOMMENDATION2_REQUEST,
+  PRODUCT_RECOMMENDATION2_SUCCESS,
+  PRODUCT_RECOMMENDATION2_FAIL,
+  PRODUCT_PEARSONRECOMMENDATION_REQUEST,
+  PRODUCT_PEARSONRECOMMENDATION_SUCCESS,
+  PRODUCT_PEARSONRECOMMENDATION_FAIL,
 } from "../constants/productConstants";
 
 //action vaneko js object ho which has  type & payload which will be dispatched to reducer
@@ -251,6 +257,50 @@ export const recommendProducts = (pname) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_RECOMMENDATION_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const recommendProducts2 = (pname) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_RECOMMENDATION_REQUEST });
+    const { data } = await axios.post(`/api/products/recommend/`, {
+      name: pname,
+    });
+
+    dispatch({
+      type: PRODUCT_RECOMMENDATION_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_RECOMMENDATION_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const recommendPearsonProducts = (pname) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_PEARSONRECOMMENDATION_REQUEST });
+    const { data } = await axios.post(`/api/products/recommendPearson/`, {
+      name: pname,
+    });
+
+    dispatch({
+      type: PRODUCT_PEARSONRECOMMENDATION_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_PEARSONRECOMMENDATION_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
