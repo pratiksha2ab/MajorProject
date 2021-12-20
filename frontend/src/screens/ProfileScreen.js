@@ -37,7 +37,7 @@ function ProfileScreen({ history }) {
       if (!user || !user.name || success || userInfo._id !== user._id) {
         //form ma user ko name ra email suru mai load garne
         dispatch(getUserDetails("profile"));
-        dispatch(listMyOrders());
+        // dispatch(listMyOrders());
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
       } else {
         setName(user.name);

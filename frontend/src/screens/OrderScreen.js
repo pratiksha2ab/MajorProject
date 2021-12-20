@@ -8,20 +8,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getOrderDetails,
   payOrder,
+  payOrder2,
   deliverOrder,
 } from "../actions/orderActions";
+import { verifyPaymentProduct } from "../actions/productActions";
 import {
   ORDER_PAY_RESET,
   ORDER_DELIVERED_RESET,
 } from "../constants/orderConstants";
 import KhaltiCheckout from "khalti-checkout-web";
-import config from "../components/khalti/KhaltiConfig";
+import mykey from "../components/khalti/KhaltiKey";
 
 function OrderScreen({ match, history }) {
   const orderId = match.params.id;
   const dispatch = useDispatch();
-
-  let checkout = new KhaltiCheckout(config);
 
   let buttonStyles = {
     backgroundColor: "purple",
@@ -49,6 +49,45 @@ function OrderScreen({ match, history }) {
       0
     );
   }
+
+  const verifyPayment = (payload) => {
+    dispatch(verifyPaymentProduct(payload));
+  };
+
+  let config = {
+    // replace this key with yours
+
+    publicKey: mykey.publicTestKey,
+    headers: { Authorization: "mykey.secretKey" },
+    productIdentity: "1234567890",
+    productName: "Babaaldeal",
+    productUrl: "http://localhost:3000/",
+    eventHandler: {
+      onSuccess(payload) {
+        // hit merchant api for initiating verfication
+        console.log(payload);
+
+        alert("payment is complete");
+        verifyPayment(payload);
+      },
+      // onError handler is optional
+      onError(error) {
+        // handle errors
+        console.log(error);
+      },
+      onClose() {
+        console.log("widget is closing");
+      },
+    },
+    paymentPreference: [
+      "KHALTI",
+      "EBANKING",
+      "MOBILE_BANKING",
+      "CONNECT_IPS",
+      "SCT",
+    ],
+  };
+  let checkout = new KhaltiCheckout(config);
 
   const addPayPalScript = () => {
     const script = document.createElement("script");
@@ -87,6 +126,9 @@ function OrderScreen({ match, history }) {
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
+  };
+  const successPaymentHandler2 = () => {
+    dispatch(payOrder2(orderId));
   };
   const deliverHandler = () => {
     dispatch(deliverOrder(order));
@@ -208,21 +250,7 @@ function OrderScreen({ match, history }) {
                   <Col>Rs.{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {/* <ListGroup.Item>
-                <Row>
-                  <Col>
-                    <Button
-                      onSuccess={successPaymentHandler}
-                      onClick={() =>
-                        checkout.show({ amount: order.totalPrice * 100 })
-                      }
-                      style={buttonStyles}
-                    >
-                      Pay with khalti
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item> */}
+
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
@@ -231,7 +259,8 @@ function OrderScreen({ match, history }) {
                     <Loader />
                   ) : (
                     <Button
-                      onSuccess={successPaymentHandler}
+                      amount={order.totalPrice}
+                      onSuccess={successPaymentHandler2}
                       onClick={() =>
                         checkout.show({ amount: order.totalPrice * 100 })
                       }

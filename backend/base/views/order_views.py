@@ -98,6 +98,16 @@ def updateOrderTopaid(request, pk):
 
     return Response("order was paid")
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderTopaid2(request, pk):
+    order = Order.objects.get(_id=pk)
+    print(order)
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+
+    return Response("order was paid")
 
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])

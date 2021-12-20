@@ -21,6 +21,9 @@ import {
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
+  PRODUCT_PAYMENT_REQUEST,
+  PRODUCT_PAYMENT_SUCCESS,
+  PRODUCT_PAYMENT_FAIL,
   PRODUCT_RECOMMENDATION_REQUEST,
   PRODUCT_RECOMMENDATION_SUCCESS,
   PRODUCT_RECOMMENDATION_FAIL,
@@ -136,6 +139,40 @@ export const createProduct = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const verifyPaymentProduct = (payload) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_PAYMENT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // const config = {
+    //   headers: {
+    //     "Content-type": "application/json",
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
+
+    const { data } = await axios.post(`/api/products/verifyPayment/`, payload);
+
+    dispatch({
+      type: PRODUCT_PAYMENT_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_PAYMENT_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

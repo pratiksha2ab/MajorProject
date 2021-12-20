@@ -30,6 +30,9 @@ import {
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
+  PRODUCT_PAYMENT_REQUEST,
+  PRODUCT_PAYMENT_SUCCESS,
+  PRODUCT_PAYMENT_FAIL,
   PRODUCT_RECOMMENDATION_REQUEST,
   PRODUCT_RECOMMENDATION_SUCCESS,
   PRODUCT_RECOMMENDATION_FAIL,
@@ -123,6 +126,22 @@ export const productUpdateReducer = (state = { product: {} }, action) => {
 
     case PRODUCT_UPDATE_RESET:
       return { product: {} };
+    default:
+      return state;
+  }
+};
+
+export const productPaymentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_PAYMENT_REQUEST:
+      return { loading: true };
+
+    case PRODUCT_PAYMENT_SUCCESS:
+      return { loading: false, success: true };
+
+    case PRODUCT_PAYMENT_FAIL:
+      return { loading: false, error: action.payload };
+
     default:
       return state;
   }

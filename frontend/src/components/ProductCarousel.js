@@ -9,6 +9,13 @@ import { listTopProducts, recommendProducts2 } from "../actions/productActions";
 function ProductCarousel() {
   const dispatch = useDispatch();
 
+  const productDetails = useSelector((state) => state.productDetails);
+  const {
+    loading: loadingProductDetail,
+    error: errorProductDetail,
+    product,
+  } = productDetails;
+
   const productTopRated = useSelector((state) => state.productTopRated);
   const { error, loading, products } = productTopRated;
 

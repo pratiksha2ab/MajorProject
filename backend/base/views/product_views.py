@@ -10,6 +10,7 @@ from rest_framework import status
 
 import pandas as pd
 import pickle
+import requests
 
 from base.models import Product, Review
 from base.serializers import ProductSerializer
@@ -48,9 +49,9 @@ def topProduct(request):
 
 
 def recommend_here(product_name):
-    with open("ml_model/model12.sav", "rb") as f:
+    with open("ml_model/model3000.sav", "rb") as f:
         model = pickle.load(f)
-    new_df = pd.read_csv("ml_model/new_data11.csv")
+    new_df = pd.read_csv("ml_model/new_data3000.csv")
     movie_index = new_df[new_df['title'] == product_name].index[0]
     # print(movie_index)
     distances = model[movie_index]
@@ -83,7 +84,7 @@ def recommendProductPearson(request):
     print(request)
     product_name = request.data.get('name').strip()
     print("------------", product_name)
-    with open("ml_model/model_pcorr1.sav", "rb") as f:
+    with open("ml_model/model_pcorr3000.sav", "rb") as f:
         model = pickle.load(f)
     recommended_result = model.recommend(product_name)
     name_list= [i[0] for i in recommended_result]
@@ -146,6 +147,28 @@ def uploadImage(request):
     product.save()
     return Response('Image was uploaded')
 
+
+@api_view(['POST'])
+def verify_payment(request):
+    
+    data = request.data
+    token=data['token']
+    amount=data['amount']
+    url = "https://khalti.com/api/v2/payment/verify/"
+    payload = {
+        "token": token,
+        "amount": amount
+        }
+    headers= { 
+         "Authorization": "Key test_secret_key_e4032561f1794e058d807155759ce6c3" 
+         }
+    response = requests.post(url, payload, headers = headers)
+    print(response)
+    # serializer = ProductSerializer(response, many=True)
+    # return Response(serializer.data)
+    return Response("success")
+    
+     
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
