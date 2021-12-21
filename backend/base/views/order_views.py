@@ -92,6 +92,7 @@ def getOrderById(request, pk):
 @permission_classes([IsAuthenticated])
 def updateOrderTopaid(request, pk):
     order = Order.objects.get(_id=pk)
+    print(order)
     order.isPaid = True
     order.paidAt = datetime.now()
     order.save()
@@ -102,7 +103,6 @@ def updateOrderTopaid(request, pk):
 @permission_classes([IsAuthenticated])
 def updateOrderTopaid2(request, pk):
     order = Order.objects.get(_id=pk)
-    print(order)
     order.isPaid = True
     order.paidAt = datetime.now()
     order.save()

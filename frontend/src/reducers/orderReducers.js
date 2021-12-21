@@ -10,6 +10,10 @@ import {
   ORDER_PAY_FAIL,
   ORDER_PAY_SUCCESS,
   ORDER_PAY_REQUEST,
+  ORDER_PAY2_RESET,
+  ORDER_PAY2_FAIL,
+  ORDER_PAY2_SUCCESS,
+  ORDER_PAY2_REQUEST,
   ORDER_LIST_MY_RESET,
   ORDER_LIST_MY_FAIL,
   ORDER_LIST_MY_SUCCESS,
@@ -103,23 +107,23 @@ export const orderPayReducer = (state = {}, action) => {
 
 export const orderPay2Reducer = (state = {}, action) => {
   switch (action.type) {
-    case ORDER_PAY_REQUEST:
+    case ORDER_PAY2_REQUEST:
       return {
         loading: true,
       };
 
-    case ORDER_PAY_SUCCESS:
+    case ORDER_PAY2_SUCCESS:
       return {
         loading: false,
         success: true,
       };
 
-    case ORDER_PAY_FAIL:
+    case ORDER_PAY2_FAIL:
       return {
         loading: false,
         error: action.payload,
       };
-    case ORDER_PAY_RESET:
+    case ORDER_PAY2_RESET:
       return {};
 
     default:

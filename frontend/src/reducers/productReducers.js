@@ -43,7 +43,12 @@ import {
   PRODUCT_PEARSONRECOMMENDATION_SUCCESS,
   PRODUCT_PEARSONRECOMMENDATION_FAIL,
 } from "../constants/productConstants";
-
+import {
+  ORDER_PAY2_RESET,
+  ORDER_PAY2_FAIL,
+  ORDER_PAY2_SUCCESS,
+  ORDER_PAY2_REQUEST,
+} from "../constants/orderConstants";
 export const productListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
@@ -133,15 +138,16 @@ export const productUpdateReducer = (state = { product: {} }, action) => {
 
 export const productPaymentReducer = (state = {}, action) => {
   switch (action.type) {
-    case PRODUCT_PAYMENT_REQUEST:
+    case ORDER_PAY2_REQUEST:
       return { loading: true };
 
-    case PRODUCT_PAYMENT_SUCCESS:
+    case ORDER_PAY2_SUCCESS:
       return { loading: false, success: true };
 
-    case PRODUCT_PAYMENT_FAIL:
+    case ORDER_PAY2_FAIL:
       return { loading: false, error: action.payload };
-
+    case ORDER_PAY2_RESET:
+      return {};
     default:
       return state;
   }

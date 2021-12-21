@@ -10,6 +10,9 @@ import {
   ORDER_PAY_FAIL,
   ORDER_PAY_SUCCESS,
   ORDER_PAY_REQUEST,
+  ORDER_PAY2_FAIL,
+  ORDER_PAY2_SUCCESS,
+  ORDER_PAY2_REQUEST,
   // ORDER_LIST_MY_RESET,
   ORDER_LIST_MY_FAIL,
   ORDER_LIST_MY_SUCCESS,
@@ -17,11 +20,13 @@ import {
   ORDER_LIST_FAIL,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_REQUEST,
+
   // ORDER_DELIVERED_RESET,
   ORDER_DELIVERED_FAIL,
   ORDER_DELIVERED_SUCCESS,
   ORDER_DELIVERED_REQUEST,
 } from "../constants/orderConstants";
+
 import { CART_DETAILS_RESET } from "../constants/cartConstants";
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -131,10 +136,10 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
   }
 };
 
-export const payOrder2 = (id) => async (dispatch, getState) => {
+export const payOrder2 = (id, payload) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: ORDER_PAY_REQUEST,
+      type: ORDER_PAY2_REQUEST,
     });
 
     const {
@@ -148,15 +153,19 @@ export const payOrder2 = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/orders/${id}/pay2/`, config);
+    const { data } = await axios.put(
+      `/api/orders/${id}/pay2/`,
+      payload,
+      config
+    );
 
     dispatch({
-      type: ORDER_PAY_SUCCESS,
+      type: ORDER_PAY2_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: ORDER_PAY_FAIL,
+      type: ORDER_PAY2_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

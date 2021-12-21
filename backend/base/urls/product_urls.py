@@ -15,7 +15,7 @@ urlpatterns = [
     path('recommend/', views.recommendProduct, name="recommend-product"),
     path('recommendPearson/', views.recommendProductPearson,
          name="recommendpearson-product"),
-    path('verifyPayment/', views.verify_payment, name="verify"),
+    path('<str:pk>/verifyPayment/', views.verify_payment, name="verify"),
     
     path('<str:pk>/', views.getProduct, name="product"),
     path('delete/<str:pk>/', views.deleteProduct, name="product-delete"),

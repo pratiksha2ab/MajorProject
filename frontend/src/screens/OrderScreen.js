@@ -14,6 +14,7 @@ import {
 import { verifyPaymentProduct } from "../actions/productActions";
 import {
   ORDER_PAY_RESET,
+  ORDER_PAY2_RESET,
   ORDER_DELIVERED_RESET,
 } from "../constants/orderConstants";
 import KhaltiCheckout from "khalti-checkout-web";
@@ -38,6 +39,9 @@ function OrderScreen({ match, history }) {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
+  const orderPay2 = useSelector((state) => state.orderPay2);
+  const { loading: loadingPay2, success: successPay2 } = orderPay2;
+
   const orderDeliver = useSelector((state) => state.orderDeliver);
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
 
@@ -51,7 +55,7 @@ function OrderScreen({ match, history }) {
   }
 
   const verifyPayment = (payload) => {
-    dispatch(verifyPaymentProduct(payload));
+    dispatch(verifyPaymentProduct(payload, orderId));
   };
 
   let config = {
@@ -67,7 +71,6 @@ function OrderScreen({ match, history }) {
         // hit merchant api for initiating verfication
         console.log(payload);
 
-        alert("payment is complete");
         verifyPayment(payload);
       },
       // onError handler is optional
@@ -108,10 +111,12 @@ function OrderScreen({ match, history }) {
     if (
       !order ||
       successPay ||
+      successPay2 ||
       order._id !== Number(orderId) ||
       successDeliver
     ) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_PAY2_RESET });
       dispatch({ type: ORDER_DELIVERED_RESET });
 
       dispatch(getOrderDetails(orderId));
@@ -122,17 +127,29 @@ function OrderScreen({ match, history }) {
         setSdkReady(true);
       }
     }
-  }, [dispatch, history, userInfo, order, orderId, successDeliver, successPay]);
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    order,
+    orderId,
+    successDeliver,
+    successPay,
+    successPay2,
+  ]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
   };
-  const successPaymentHandler2 = () => {
-    dispatch(payOrder2(orderId));
+  const successPaymentHandler2 = (payload) => {
+    dispatch(payOrder2(orderId, payload));
   };
   const deliverHandler = () => {
     dispatch(deliverOrder(order));
   };
+  function reloadpage() {
+    window.location.reload(true);
+  }
 
   return loading ? (
     <Loader />
@@ -253,7 +270,7 @@ function OrderScreen({ match, history }) {
 
               {!order.isPaid && (
                 <ListGroup.Item>
-                  {loadingPay && <Loader />}
+                  {loadingPay2 && <Loader />}
 
                   {!sdkReady ? (
                     <Loader />
@@ -261,6 +278,7 @@ function OrderScreen({ match, history }) {
                     <Button
                       amount={order.totalPrice}
                       onSuccess={successPaymentHandler2}
+                      // onClick={successPaymentHandler2}
                       onClick={() =>
                         checkout.show({ amount: order.totalPrice * 100 })
                       }

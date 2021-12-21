@@ -11,9 +11,12 @@ from rest_framework import status
 import pandas as pd
 import pickle
 import requests
+from datetime import datetime
 
 from base.models import Product, Review
-from base.serializers import ProductSerializer
+from base.serializers import ProductSerializer 
+from base.models import  Order
+
 
 
 @api_view(['GET'])
@@ -149,9 +152,10 @@ def uploadImage(request):
 
 
 @api_view(['POST'])
-def verify_payment(request):
+def verify_payment(request,pk):    
     
     data = request.data
+    print(data)
     token=data['token']
     amount=data['amount']
     url = "https://khalti.com/api/v2/payment/verify/"
@@ -163,10 +167,21 @@ def verify_payment(request):
          "Authorization": "Key test_secret_key_e4032561f1794e058d807155759ce6c3" 
          }
     response = requests.post(url, payload, headers = headers)
-    print(response)
-    # serializer = ProductSerializer(response, many=True)
-    # return Response(serializer.data)
-    return Response("success")
+    r=response.json()
+    print(r)
+
+
+    if response.status_code == 200:
+        order = Order.objects.get(_id=pk)
+        order.isPaid = True
+        order.paidAt = datetime.now()
+        order.save()
+        msg = {"message": "success"}
+        return Response(msg) 
+
+
+    msg = {"message": "error"}
+    return Response(msg)
     
      
 

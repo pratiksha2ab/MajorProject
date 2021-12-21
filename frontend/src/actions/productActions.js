@@ -147,39 +147,43 @@ export const createProduct = () => async (dispatch, getState) => {
   }
 };
 
-export const verifyPaymentProduct = (payload) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: PRODUCT_PAYMENT_REQUEST,
-    });
+export const verifyPaymentProduct =
+  (payload, id) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: PRODUCT_PAYMENT_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    // const config = {
-    //   headers: {
-    //     "Content-type": "application/json",
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
+      // const config = {
+      //   headers: {
+      //     "Content-type": "application/json",
+      //     Authorization: `Bearer ${userInfo.token}`,
+      //   },
+      // };
 
-    const { data } = await axios.post(`/api/products/verifyPayment/`, payload);
+      const { data } = await axios.post(
+        `/api/products/${id}/verifyPayment/`,
+        payload
+      );
 
-    dispatch({
-      type: PRODUCT_PAYMENT_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: PRODUCT_PAYMENT_FAIL,
-      payload:
-        error.response && error.response.data.detail
-          ? error.response.data.detail
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: PRODUCT_PAYMENT_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_PAYMENT_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
 
 export const updateProduct = (product) => async (dispatch, getState) => {
   try {
