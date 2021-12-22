@@ -72,6 +72,7 @@ function OrderScreen({ match, history }) {
         console.log(payload);
 
         verifyPayment(payload);
+        reloadpage();
       },
       // onError handler is optional
       onError(error) {
