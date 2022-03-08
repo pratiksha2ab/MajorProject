@@ -13,23 +13,49 @@ function Recommendation() {
   const productPearsonRecommendation = useSelector(
     (state) => state.productPearsonRecommendation
   );
-  const { error, loading, products } = productPearsonRecommendation;
+  const { products } = productPearsonRecommendation;
 
-  return loading ? (
-    <Loader />
-  ) : error ? (
-    <Message variant="danger">{error}</Message>
-  ) : (
+  const loop = (name_score) => {
+    let n = 1;
+    for (n; n <= name_score.length; n++) {
+      return { n };
+    }
+  };
+
+  const changearray = (products) => {
+    if (products === []) {
+      return;
+    }
+    return {};
+  };
+
+  return (
+    //  products === [] ? (
+    //   <Message variant="danger">Please review some products</Message>
+    // ) :
     <div>
-      <h1>Recommendation</h1>
+      <h1>Recommendation by Pearson Correlation</h1>
       {userInfo ? (
-        <Row>
-          {products.map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <RecommendPearson product={product} />
-            </Col>
-          ))}
-        </Row>
+        <div>
+          <Row>
+            {products.serialized_data.map((product) => (
+              <>
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <RecommendPearson product={product} />
+                </Col>
+              </>
+            ))}
+          </Row>
+          <Row>
+            {products.name_score.map((name_score) => {
+              return (
+                <>
+                  <h6>The correlated data for product is {name_score}</h6>
+                </>
+              );
+            })}
+          </Row>
+        </div>
       ) : (
         <Message variant="info">
           Please review some products to get a recommendation

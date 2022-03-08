@@ -223,12 +223,12 @@ export const productRecommendation2Reducer = (
 };
 
 export const productPearsonRecommendationReducer = (
-  state = { products: [] },
+  state = { products: { name_score: [], serialized_data: [] } },
   action
 ) => {
   switch (action.type) {
     case PRODUCT_PEARSONRECOMMENDATION_REQUEST:
-      return { loading: true, products: [] };
+      return { loading: true, ...state };
 
     case PRODUCT_PEARSONRECOMMENDATION_SUCCESS:
       return { loading: false, products: action.payload };

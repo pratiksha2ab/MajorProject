@@ -32,6 +32,7 @@ function RecommendPearson({ product }) {
             </div>
           </Card.Text>
           <Card.Text as="h3">Rs.{product.price}</Card.Text>
+          <h1>hello</h1>
         </Card.Body>
       </Link>
     </Card>

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   listProductDetails,
   createProductReview,
-  recommendProducts2,
+  // recommendProducts2,
   recommendPearsonProducts,
 } from "../actions/productActions";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
@@ -70,6 +70,7 @@ function ProductScreen({ match, history }) {
       rating >= 3 && dispatch(recommendPearsonProducts(product.name));
     }
   };
+
   return (
     <div>
       <Link to="/" className="btn btn-light my-3">
@@ -164,17 +165,65 @@ function ProductScreen({ match, history }) {
           <ListGroup>
             <h2>You may also like</h2>
             <Row>
-              {products.map((product) => (
+              {products?.map((product) => (
                 <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                   <RecommendProduct product={product} />
                 </Col>
               ))}
             </Row>
             {/* <Row>
-              {" "}
-              <Col>recommended products here</Col>
-              <Col>recommended products here</Col>{" "}
-              <Col>recommended products here</Col>
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Card className=" my-2 p-3 ">
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`/product/${product._id}`}
+                  >
+                    <Card.Img src={product.image} />
+
+                    <Card.Body>
+                      <Card.Title as="div">
+                        <strong>{product.name}</strong>
+                      </Card.Title>
+                      <Card.Text as="div">
+                        <div className="my-3">
+                          <Rating
+                            value={product.rating}
+                            text={` ${product.numReviews} reviews`}
+                            color={"rgb(199 223 25)"}
+                          />
+                        </div>
+                      </Card.Text>
+                      <Card.Text as="h3">Rs.{product.price}</Card.Text>
+                    </Card.Body>
+                  </Link>
+                </Card>
+              </Col>
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Card className=" my-2 p-3 ">
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`/product/${product._id}`}
+                  >
+                    <Card.Img src={product.image} />
+
+                    <Card.Body>
+                      <Card.Title as="div">
+                        <strong>{product.name}</strong>
+                      </Card.Title>
+                      <Card.Text as="div">
+                        <div className="my-3">
+                          <Rating
+                            value={product.rating}
+                            text={` ${product.numReviews} reviews`}
+                            color={"rgb(199 223 25)"}
+                          />
+                        </div>
+                      </Card.Text>
+                      <Card.Text as="h3">Rs.{product.price}</Card.Text>
+                    </Card.Body>
+                  </Link>
+                </Card>
+              </Col>
             </Row> */}
           </ListGroup>
           <Row>

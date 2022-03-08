@@ -10,6 +10,14 @@ function Header() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const productPearsonRecommendation = useSelector(
+    (state) => state.productPearsonRecommendation
+  );
+  const { error, loading, products } = productPearsonRecommendation;
+
+  // const checkproduct = () => {
+  //   if(products ===[]){}
+  // };
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(logout());
@@ -34,6 +42,24 @@ function Header() {
                   <i className="fas fa-shopping-cart"></i> Cart
                 </Nav.Link>
               </LinkContainer>
+              {/* {products ? (
+                <LinkContainer to="/recommendation">
+                  <Nav.Link>My Recommendations</Nav.Link>
+                </LinkContainer>
+              ) : (
+                <LinkContainer to="/">
+                  <Nav.Link>My Recommendations</Nav.Link>
+                </LinkContainer>
+              )} */}
+              {/* {userInfo ? (
+                <LinkContainer to="/">
+                  <Nav.Link>My Recommendations</Nav.Link>
+                </LinkContainer>
+              ) : (
+                <LinkContainer to="/recommendation">
+                  <Nav.Link>My Recommendations</Nav.Link>
+                </LinkContainer>
+              )} */}
               <LinkContainer to="/recommendation">
                 <Nav.Link>My Recommendations</Nav.Link>
               </LinkContainer>

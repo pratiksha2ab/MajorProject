@@ -14,9 +14,8 @@ import requests
 from datetime import datetime
 
 from base.models import Product, Review
-from base.serializers import ProductSerializer 
-from base.models import  Order
-
+from base.serializers import ProductSerializer
+from base.models import Order
 
 
 @api_view(['GET'])
@@ -90,11 +89,19 @@ def recommendProductPearson(request):
     with open("ml_model/model_pcorr3000.sav", "rb") as f:
         model = pickle.load(f)
     recommended_result = model.recommend(product_name)
-    name_list= [i[0] for i in recommended_result]
-    products = Product.objects.filter(name__in =name_list)
+    name_list = [i[0] for i in recommended_result]
+    name_score = [i[1] for i in recommended_result]
+    products = Product.objects.filter(name__in=name_list)
     serializer = ProductSerializer(products, many=True)
-    # print(serializer.data)
-    return Response(serializer.data)
+    # return Response(serializer.data)
+
+    print([i for i in zip(name_score, serializer.data)])
+
+    result = {
+        'name_score': name_score,
+        'serialized_data': serializer.data
+    }
+    return Response(result)
 
 
 @api_view(['POST'])
@@ -152,24 +159,23 @@ def uploadImage(request):
 
 
 @api_view(['POST'])
-def verify_payment(request,pk):    
-    
+def verify_payment(request, pk):
+
     data = request.data
     print(data)
-    token=data['token']
-    amount=data['amount']
+    token = data['token']
+    amount = data['amount']
     url = "https://khalti.com/api/v2/payment/verify/"
     payload = {
         "token": token,
         "amount": amount
-        }
-    headers= { 
-         "Authorization": "Key test_secret_key_e4032561f1794e058d807155759ce6c3" 
-         }
-    response = requests.post(url, payload, headers = headers)
-    r=response.json()
+    }
+    headers = {
+        "Authorization": "Key test_secret_key_e4032561f1794e058d807155759ce6c3"
+    }
+    response = requests.post(url, payload, headers=headers)
+    r = response.json()
     print(r)
-
 
     if response.status_code == 200:
         order = Order.objects.get(_id=pk)
@@ -177,13 +183,11 @@ def verify_payment(request,pk):
         order.paidAt = datetime.now()
         order.save()
         msg = {"message": "success"}
-        return Response(msg) 
-
+        return Response(msg)
 
     msg = {"message": "error"}
     return Response(msg)
-    
-     
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
