@@ -10,12 +10,12 @@ function Footer() {
       </a>
       <MDBRow>
         <MDBCol md="6">
-          <h5 className="title">BabaalDeal</h5>
+          <h5 className="title">DealNepal</h5>
           <p className="footer-intro">
-            “BabaalDeal” is a full stack interactive B2C e-commerce providing
+            “DealNepal” is a full stack interactive B2C e-commerce providing
             users with a platform to buy and review the electronics related
             accessories online which will be built with reactjs for frontend,
-            redux for state management, postgres for database and DjangoREST
+            redux for state management, SQLite for database and DjangoREST
             framework for backend.
           </p>
         </MDBCol>
@@ -24,15 +24,15 @@ function Footer() {
           <ul>
             <li className="list-unstyled">
               <i className="fab fa-facebook"></i>
-              <a href="https://www.facebook.com/ashesh.ranagurung"> facebook</a>
+              <a href="/"> facebook</a>
             </li>
             <li className="list-unstyled">
               <i className="fab fa-instagram"></i>
-              <a href="https://www.instagram.com/asheshrana.gr"> Instagram</a>
+              <a href="/"> Instagram</a>
             </li>
             <li className="list-unstyled">
               <i className="fab fa-github"></i>
-              <a href="https://github.com/VeNom198"> Github</a>
+              <a href="/"> Github</a>
             </li>
             <li className="list-unstyled">
               <i className="fab fa-linkedin-in"></i>
@@ -45,14 +45,14 @@ function Footer() {
           <ul>
             <li className="list-unstyled">
               {" "}
-              <i className="fas fa-school"></i> Ambition College,KTM
+              <i className="fas fa-school"></i> Everest College,KTM
             </li>
             <li className="list-unstyled">
-              <i className="fas fa-user"></i> +977 9864014315
+              <i className="fas fa-user"></i> +977 9813241542
             </li>
             <li className="list-unstyled">
               {" "}
-              <i className="fas fa-envelope-open"></i> ashesh7272@gmail.com
+              <i className="fas fa-envelope-open"></i> pratiksharegmi42@gmail.com
             </li>
           </ul>
         </MDBCol>
@@ -60,7 +60,7 @@ function Footer() {
 
       <div className="footer-copyright text-center py-3">
         <MDBContainer className="copyright" fluid>
-          &copy; {new Date().getFullYear()} Copyright: Ashesh-BabaalDeal.
+          &copy; {new Date().getFullYear()} Copyright: DealNepal.
         </MDBContainer>
       </div>
     </div>

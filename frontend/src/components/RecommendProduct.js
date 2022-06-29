@@ -17,7 +17,7 @@ function RecommendProduct({ product, namescore }) {
   return (
     <>
       <Card className=" my-2 p-3 " onClick={sendProductNameToRecommendAction2}>
-        <Link style={{ textDecoration: "none" }} to={`/product/${product._id}`}>
+        <Link style={{ textDecoration: "none", height:"400px" }} to={`/product/${product._id}`}>
           <Card.Img src={product.image} />
 
           <Card.Body>

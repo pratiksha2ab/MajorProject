@@ -29,7 +29,7 @@ function Header() {
           <LinkContainer to="/">
             <Navbar.Brand>
               {" "}
-              <i className="fas fa-laptop-code"></i> BabaalDeal
+              <i className="fas fa-laptop-code"></i> DealNepal
             </Navbar.Brand>
           </LinkContainer>
 
@@ -60,9 +60,9 @@ function Header() {
                   <Nav.Link>My Recommendations</Nav.Link>
                 </LinkContainer>
               )} */}
-              <LinkContainer to="/recommendation">
+              {/* <LinkContainer to="/recommendation">  //recommendation dekhdena aba uncomment later
                 <Nav.Link>My Recommendations</Nav.Link>
-              </LinkContainer>
+              </LinkContainer> */}
 
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="username">
